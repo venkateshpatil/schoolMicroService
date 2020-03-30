@@ -17,6 +17,7 @@ import com.microservicepractice.primaryschool.model.Standard;
 import com.microservicepractice.primaryschool.model.Student;
 import com.microservicepractice.primaryschool.model.Teacher;
 
+
 @RequestMapping("school")
 @RestController
 public class SchoolController {
@@ -40,14 +41,14 @@ public class SchoolController {
 		System.out.println(classId);
 		Standard standard = new Standard();
 		List<Student> allStudents = restTemplate.exchange(
-				"http://localhost:8081/student/allStudents",
+				"http://student-s/student/allStudents",
 				HttpMethod.GET,
 				null,
 				new ParameterizedTypeReference<List<Student>>() {
 				}).getBody();
 
 		List<Teacher> allTeachers = restTemplate.exchange(
-				"http://localhost:8082/teacher/allTeachers",
+				"http://teacher-s/teacher/allTeachers",
 				HttpMethod.GET,
 				null, 
 				new ParameterizedTypeReference<List<Teacher>>() {
