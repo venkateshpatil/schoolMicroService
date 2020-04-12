@@ -1,10 +1,9 @@
 package com.microservicepractice.teacher.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,48 +14,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservicepractice.teacher.model.Teacher;
+import com.microservicepractice.teacher.service.TeacherService;
+
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {
-	
-	private static Map<Integer,Teacher> teachersDB = new HashMap<>();
-	static
-	{
-		teachersDB.put(1, new Teacher(1, "Teacher1", 10000, 35, 1));
-		teachersDB.put(2, new Teacher(2, "Teacher2", 20000, 45, 2));		
+
+	@Autowired TeacherService teacherService;
+
+	@PostMapping("/addDummyData")
+	public List<Teacher> addAllDummyData() {
+		List<Teacher> teacherList = new ArrayList<>();
+		teacherList.add(new Teacher(1, "Teacher1", 10000, 35, 1));
+		teacherList.add(new Teacher(2, "Teacher2", 20000, 45, 2));
+		return teacherService.addDummyDta(teacherList);
 	}
-	
+
 	@GetMapping("/allTeachers")
-	public static List<Teacher> getAllTeachers()
-	{
-		return new ArrayList<Teacher>(teachersDB.values());
-	}	
-	
+	public List<Teacher> getAllTeachers() {
+		return teacherService.getAllTeachers();
+	}
+
 	@GetMapping("/{teacherId}")
-	public Teacher getTeacher(@PathVariable("teacherId") int teacherId)
-	{
-		return teachersDB.get(teacherId);
+	public Teacher getTeacher(@PathVariable("teacherId") int teacherId) {
+		return teacherService.getTeacher(teacherId);
 	}
-	
+
 	@PostMapping("/addTeacher")
-	public Teacher addTeacher(@RequestBody Teacher teacher)
-	{
-		teachersDB.put(teacher.getId(), teacher);
-		return teacher;
+	public Teacher addTeacher(@RequestBody Teacher teacher) {
+		return teacherService.addTeacher(teacher);
 	}
-	
+
 	@PutMapping("/editTeacher")
-	public String editTeacher(@RequestBody Teacher teacher)
-	{
-		teachersDB.put(teacher.getId(), teacher);
-		return "tecaher with  id "+teacher.getId()+" is succefully edited.";
+	public String editTeacher(@RequestBody Teacher teacher) {
+		teacherService.editTeacher(teacher);
+		return "tecaher with  id " + teacher.getId() + " is succefully edited.";
 	}
-	
+
 	@DeleteMapping("/deleteTeacher/{teacherId}")
-	public boolean deleteTeacher(@PathVariable("teacherId") int teacherId)
-	{
-		teachersDB.remove(teacherId);
-		return true;		
+	public boolean deleteTeacher(@PathVariable("teacherId") int teacherId) {
+		teacherService.deleteTeacher(teacherId);
+		return true;
+	}
+
+	@DeleteMapping("/deleteAllTeachers")
+	public boolean deleteAllTeachers() {
+		teacherService.deleteAllTeachers();
+		return true;
 	}
 
 }

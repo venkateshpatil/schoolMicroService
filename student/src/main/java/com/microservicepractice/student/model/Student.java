@@ -1,5 +1,13 @@
 package com.microservicepractice.student.model;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Student {
+	@Id
+	@GeneratedValue
 	private int rollNo;
 	private String name;
 	private int standard;
